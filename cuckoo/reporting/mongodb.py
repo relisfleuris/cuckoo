@@ -10,6 +10,8 @@ from cuckoo.common.abstracts import Report
 from cuckoo.common.exceptions import CuckooReportError
 from cuckoo.common.mongo import mongo
 from cuckoo.common.objects import File
+from cuckoo.learning.malware import MalwareDetect
+from cuckoo.misc import cwd, version, decide_cwd
 
 class MongoDB(Report):
     """Stores report in MongoDB."""
@@ -258,6 +260,69 @@ class MongoDB(Report):
                 procmon.append(self.db.procmon.insert(chunk))
 
             report["procmon"] = procmon
+        if "behavior" in report and "apistats" in report["behavior"]:
+            api_list = ["CreateFile","CreateMutex", "CreateProcess", "CreateRemoteThread",
+            "CreateService", "DeleteFile", "FindWindow", "OpenMutex",
+            "OpenSCManager", "ReadFile", "ReadProcessMemory", "RegDeleteKey",
+            "RegEnumKey", "RegEnumValue", "RegOpenKey", "ShellExecute",
+            "TerminateProcess", "URLDownloadToFile", "WriteFile", "WriteProcessMemory"]
+            api_results = []
+            decision = []
+            count = 0
+            #string_attr = ""
+            #json.dump(results, report, sort_keys=False, indent=4)
+            #report.write(results)
+            apistats = results["behavior"]["apistats"]
+            duration = results["info"]["duration"]
+            pe_id = results["info"]["id"]
+            for a in api_list:
+                for process, values in apistats.iteritems():
+                    #print process
+                    for api, freq in values.iteritems():
+                        #print api
+                        if a in api:
+                            count +=freq
+                    #print(api, freq)
+            #string_attr.append(result)
+                if (a not in 'CreateMutex') and (a not in 'OpenMutex'):
+            	       api_results.append(count)
+            	count = 0
+            behavior = report["behavior"]
+            dropped = report["dropped"]
+            #print ("Processes ", len(behavior))
+            #print ("Dropped Files ", len(dropped))
+            #csv_results = "(duration ="+str(duration)+" id="+str(pe_id)+") - " + "".join(str(res)+',' for res in api_results)
+            #            if duration >= 90:
+            #csv_results = "".join(str(res)+',' for res in api_results)
+            #csv_results += str(len(behavior)) + "," + str(len(dropped))
+            api_results.append(len(behavior)) # number of process generated
+            api_results.append(len(dropped)) # number of dropped files
+            try:
+                hosts = results["network"]["hosts"]
+            except:
+                #vazio = length 0
+                hosts = []
+            avgentropy = round(self.entropy(results["static"]["pe_sections"]), 4)
+            api_results.append(len(hosts)) #TODO: Change api_results name
+            api_results.append(avgentropy)
+            decision.append(api_results)
 
+            filepath = os.path.join(self.reports_path, "predict")
+            self.learning_path = cwd("storage", "learning")
+            mlpath = os.path.join(self.learning_path, "CART.ml")
+            mdetect = MalwareDetect()
+            dataset_path = os.path.join(self.learning_path, "worms.data")
+            #mdetect.preparate_dataset(dataset_path, PARAMETERS)
+            #mdetect.accuracy_machine_learning_algorithms()
+            print decision
+            predict = mdetect.predict(mlpath,decision)
+            print ('mongodb:', predict)
+            report['predict'] = predict[0]
         # Store the report and retrieve its object id.
         self.db.analysis.save(report)
+
+    def entropy(self, pe_sections):
+        sectionslen = len(str(pe_sections))
+        entropies = []
+        totalsize = sum(int(section["size_of_data"], 16) for section in pe_sections)
+        return sum(section["entropy"]*int(section["size_of_data"],16)/totalsize for section in pe_sections)

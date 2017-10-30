@@ -709,6 +709,9 @@ class Config(object):
             "feedback": {
                 "enabled": Boolean(False),
             },
+            "dataset":{
+                "enabled": Boolean(True),
+            },
             "jsondump": {
                 "enabled": Boolean(True),
                 "indent": Int(4),
@@ -774,6 +777,11 @@ class Config(object):
                 "hash_filename": Boolean(False),
                 "hash_url": Boolean(False),
             },
+        },
+        "learning":{
+            "cart":{
+                "enabled": Boolean(False),
+            }
         },
         "routing": {
             "routing": {

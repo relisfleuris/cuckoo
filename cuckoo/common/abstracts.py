@@ -1207,6 +1207,9 @@ class Signature(object):
                     marks=self.marks[:self.markcount],
                     markcount=len(self.marks))
 
+class Learn(object):
+    """Base abstract class for learning modules. """
+    pass
 class Report(object):
     """Base abstract class for reporting module."""
     order = 1
