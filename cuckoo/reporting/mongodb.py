@@ -10,7 +10,7 @@ from cuckoo.common.abstracts import Report
 from cuckoo.common.exceptions import CuckooReportError
 from cuckoo.common.mongo import mongo
 from cuckoo.common.objects import File
-from cuckoo.learning.malware import MalwareDetect
+from cuckoo.learning.malwares import MalwareDetect
 from cuckoo.misc import cwd, version, decide_cwd
 
 class MongoDB(Report):
