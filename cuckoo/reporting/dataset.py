@@ -14,8 +14,8 @@ class Dataset(Report):
         @param results: Cuckoo results dict.
         @raise CuckooReportError: if fails to write report.
         """
-        api_list = ["CreateFile","CreateMutex", "CreateProcess", "CreateRemoteThread",
-         "CreateService", "DeleteFile", "FindWindow", "OpenMutex",
+        api_list = ["CreateFile","CreateMutant", "CreateProcess", "CreateRemoteThread",
+         "CreateService", "DeleteFile", "FindWindow", "OpenMutant",
          "OpenSCManager", "ReadFile", "ReadProcessMemory", "RegDeleteKey",
          "RegEnumKey", "RegEnumValue", "RegOpenKey", "ShellExecute",
          "TerminateProcess", "URLDownloadToFile", "WriteFile", "WriteProcessMemory"]

@@ -734,6 +734,7 @@ class Config(object):
                 "port": Int(27017),
                 "db": String("cuckoo"),
                 "store_memdump": Boolean(True),
+                "prediction":Boolean(False),
                 "paginate": Int(100),
                 "username": String(),
                 "password": String(),

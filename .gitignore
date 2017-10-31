@@ -26,6 +26,7 @@ docs/book/_build/
 .cache
 Cuckoo.egg-info/
 venv
+cvenv
 lib/python2.7/
 build/
 dist/

@@ -260,9 +260,9 @@ class MongoDB(Report):
                 procmon.append(self.db.procmon.insert(chunk))
 
             report["procmon"] = procmon
-        if "behavior" in report and "apistats" in report["behavior"]:
-            api_list = ["CreateFile","CreateMutex", "CreateProcess", "CreateRemoteThread",
-            "CreateService", "DeleteFile", "FindWindow", "OpenMutex",
+        if "behavior" in report and "apistats" in report["behavior"] and self.options.get("prediction"):
+            api_list = ["CreateFile","CreateMutant", "CreateProcess", "CreateRemoteThread",
+            "CreateService", "DeleteFile", "FindWindow", "OpenMutant",
             "OpenSCManager", "ReadFile", "ReadProcessMemory", "RegDeleteKey",
             "RegEnumKey", "RegEnumValue", "RegOpenKey", "ShellExecute",
             "TerminateProcess", "URLDownloadToFile", "WriteFile", "WriteProcessMemory"]
@@ -284,9 +284,8 @@ class MongoDB(Report):
                             count +=freq
                     #print(api, freq)
             #string_attr.append(result)
-                if (a not in 'CreateMutex') and (a not in 'OpenMutex'):
-            	       api_results.append(count)
-            	count = 0
+                api_results.append(count)
+                count = 0
             behavior = report["behavior"]
             dropped = report["dropped"]
             #print ("Processes ", len(behavior))
