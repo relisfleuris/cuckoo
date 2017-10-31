@@ -6,7 +6,7 @@ from cuckoo.common.abstracts import Report
 from cuckoo.common.exceptions import CuckooReportError
 from cuckoo.misc import cwd, version, decide_cwd
 
-class CsvDump(Report):
+class Dataset(Report):
     """Saves analysis results in CSV format."""
 
     def run(self, results):
