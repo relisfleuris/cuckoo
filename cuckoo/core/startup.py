@@ -50,7 +50,7 @@ def check_configs():
     @raise CuckooStartupError: if config files do not exist.
     """
     configs = (
-        "auxiliary", "cuckoo", "memory", "processing", "reporting", "routing",
+        "auxiliary", "cuckoo", "memory", "processing", "reporting", "routing", "learning"
     )
 
     for filename in configs:

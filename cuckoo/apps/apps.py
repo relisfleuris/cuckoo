@@ -30,7 +30,7 @@ from cuckoo.core.database import (
 )
 from cuckoo.core.init import write_cuckoo_conf
 from cuckoo.core.log import task_log_start, task_log_stop, logger
-from cuckoo.core.plugins import RunProcessing, RunSignatures, RunReporting
+from cuckoo.core.plugins import RunProcessing, RunSignatures, RunReporting, RunLearning
 from cuckoo.core.startup import init_console_logging
 from cuckoo.misc import cwd, mkdir
 
@@ -218,6 +218,7 @@ def submit_tasks(target, options, package, custom, owner, timeout, priority,
 def process(target, copy_path, task):
     results = RunProcessing(task=task).run()
     RunSignatures(results=results).run()
+    RunLearning(task=task, resuslts=results).run()
     RunReporting(task=task, results=results).run()
 
     if config("cuckoo:cuckoo:delete_original"):

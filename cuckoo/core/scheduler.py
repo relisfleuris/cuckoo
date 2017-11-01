@@ -23,7 +23,7 @@ from cuckoo.common.files import Folders
 from cuckoo.core.database import Database, TASK_COMPLETED, TASK_REPORTED
 from cuckoo.core.guest import GuestManager
 from cuckoo.core.plugins import RunAuxiliary, RunProcessing
-from cuckoo.core.plugins import RunSignatures, RunReporting
+from cuckoo.core.plugins import RunSignatures, RunLearning, RunReporting
 from cuckoo.core.log import task_log_start, task_log_stop, logger
 from cuckoo.core.resultserver import ResultServer
 from cuckoo.core.rooter import rooter
@@ -648,6 +648,7 @@ class AnalysisManager(threading.Thread):
         # copy of its code. TODO Also remove "archive" files.
         results = RunProcessing(task=self.task).run()
         RunSignatures(results=results).run()
+        RunLearning(task=self.task, results=results).run()
         RunReporting(task=self.task, results=results).run()
 
         # If the target is a file and the user enabled the option,

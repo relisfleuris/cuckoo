@@ -55,10 +55,13 @@ class Dataset(Report):
             csv_results = "".join(str(res)+',' for res in api_results)
             #print ("Average Entropy", self.entropy(results["static"]["pe_sections"]))
             avgentropy = round(self.entropy(results["static"]["pe_sections"]), 4)
-
-            csv_results += str(len(behavior)) + "," + str(len(dropped)) + "," + str(len(hosts)) + "," + str(avgentropy) + "," + classification+","+results["target"]["file"]["name"]
-            print(csv_results)
-            report = codecs.open(os.path.join(cwd("storage", "analyses"), "worms.data"), "a", "utf-8")
+            #print csv_results
+            csv_results += str(len(behavior)) + "," + str(len(dropped)) + "," + str(len(hosts)) + "," + str(avgentropy) + "," \
+            + classification+","+results["target"]["file"]["name"]
+            #print(csv_results)
+            if not os.path.exists(self.learning_path):
+                os.mkdir(self.learning_path)
+            report = codecs.open(os.path.join(self.learning_path, "worms.data"), "a", "utf-8")
             report.write(csv_results + "\n")
             report.close()
         except (UnicodeError, TypeError, IOError) as e:

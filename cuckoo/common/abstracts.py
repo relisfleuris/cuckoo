@@ -7,7 +7,11 @@ import logging
 import os
 import re
 import time
-
+#Machine Learning modules
+import pandas
+import random
+from sklearn import model_selection
+#end machine learning modules
 import xml.etree.ElementTree as ET
 
 from cuckoo.common.config import config
@@ -1209,7 +1213,49 @@ class Signature(object):
 
 class Learn(object):
     """Base abstract class for learning modules. """
-    pass
+    order = 1
+    def __init__(self):
+        self.learning_path = cwd('storage', 'learning')
+        self.options = ''
+        self.dataset_path = ''
+        self.X_train, self.X_validation, self.Y_train, self.Y_validation = None, None, None, None
+
+    def entropy(self, pe_sections):
+        sectionslen = len(str(pe_sections))
+        entropies = []
+        totalsize = sum(int(section["size_of_data"], 16) for section in pe_sections)
+        return sum(section["entropy"]*int(section["size_of_data"],16)/totalsize for section in pe_sections)
+        
+    def set_options(self, options):
+        self.options = Dictionary(options)
+
+    def set_parameters(self, parameters):
+        self.parameters = parameters
+    def set_dataset_path(self, dataset_name):
+        self.dataset_path = os.path.join(self.learning_path, dataset_name)
+
+    def preparate_dataset(self):
+        dataset = pandas.read_csv(self.dataset_path, names=self.parameters, index_col=False)
+        array_values = dataset.values
+        #print array_values
+        #print(len(self.parameters))
+        X = array_values[:,0:len(self.parameters)-1] 	# all parameters
+        #print X
+        #print sum(X[:,len(parameters)-2])
+        Y = array_values[:,len(self.parameters)-1]		# answers (class)
+        validation_size = 0.15
+        seed = random.randrange(0,100)
+        #(X_train, X_validation, Y_train, Y_validation)
+        self.X_train, self.X_validation, self.Y_train, self.Y_validation = model_selection.train_test_split(X, Y, test_size=validation_size, random_state=seed)
+    #def generate(self, current):
+    #    cart = model.fit(self.X_train, self.Y_train)
+    #    dspath = os.path.join(self.learning_path, +".ml")
+    #    pickle.dump(cart, open(dspath, 'wb'))
+    def run(self, results):
+        """Start learn processing.
+        @raise NotImplementedError: this method is abstract.
+        """
+        raise NotImplementedError
 class Report(object):
     """Base abstract class for reporting module."""
     order = 1
@@ -1217,6 +1263,7 @@ class Report(object):
     def __init__(self):
         self.analysis_path = ""
         self.reports_path = ""
+        self.learning_path = ""
         self.task = None
         self.options = None
 
@@ -1236,9 +1283,10 @@ class Report(object):
         self.reports_path = self._get_analysis_path("reports")
         self.shots_path = self._get_analysis_path("shots")
         self.pcap_path = self._get_analysis_path("dump.pcap")
-
+        self.learning_path = os.path.join(cwd("storage"),"learning")
         try:
             Folders.create(self.reports_path)
+            Folders.create(self.learning_path)
         except CuckooOperationalError as e:
             raise CuckooReportError(e)
 

@@ -780,9 +780,22 @@ class Config(object):
             },
         },
         "learning":{
+            "learning":{
+                "dataset_name": String(),
+                "parameters": List(String, None),
+            },
             "cart":{
                 "enabled": Boolean(False),
-            }
+            },
+            "knn":{
+                "enabled": Boolean(False),
+            },
+            "lda":{
+                "enabled": Boolean(False),
+            },
+            "lr":{
+                "enabled": Boolean(False),
+            },
         },
         "routing": {
             "routing": {
