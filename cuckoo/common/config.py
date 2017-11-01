@@ -781,8 +781,8 @@ class Config(object):
         },
         "learning":{
             "learning":{
-                "dataset_name": String(),
-                "parameters": List(String, None),
+                "dataset_name": String("worms.data"),
+                "parameters": List(String, "CreateFile,CreateMutant,CreateProcess,CreateRemoteThread,CreateService,DeleteFile,FindWindow,OpenMutant,OpenSCManager,ReadFile,ReadProcessMemory,RegDeleteKey,RegEnumKey,RegEnumValue,RegOpenKey,ShellExecute,TerminateProcess,URLDownloadToFile,WriteFile,WriteProcessMemory,NumberProcess,NumberDroppedFiles,NumberHosts,Entropy,class"),
             },
             "cart":{
                 "enabled": Boolean(False),

@@ -591,7 +591,7 @@ class RunReporting(object):
             module_name = module_name.rsplit(".", 1)[1]
 
         try:
-            options = config2("learning", module_name)
+            options = config2("reporting", module_name)
         except CuckooConfigurationError:
             log.debug(
                 "Reporting module %s not found in configuration file",
@@ -602,7 +602,7 @@ class RunReporting(object):
         # If the reporting module is disabled in the config, skip it.
         if not options.enabled:
             return
-
+        print 'module %s'%current.__class__.__name__
         # Give it the path to the analysis results folder.
         current.set_path(self.analysis_path)
         # Give it the analysis task object.
@@ -643,7 +643,6 @@ class RunReporting(object):
         # Return if no reporting modules are loaded.
         if reporting_list:
             reporting_list.sort(key=lambda module: module.order)
-
             # Run every loaded reporting module.
             for module in reporting_list:
                 self.process(module)
@@ -697,6 +696,7 @@ class RunLearning(object):
                 "Learning module has no parameters",
             )
         current.run(self.results)
+
     def run(self):
         learning_list = cuckoo.learning.plugins
         if learning_list:
