@@ -192,6 +192,7 @@ do_setup(
         "httpreplay>=0.2.1, <0.3",
         "jinja2==2.9.6",
         "jsbeautifier==1.6.2",
+        "m2crypto==0.27.0",
         "oletools==0.42",
         "peepdf==0.3.6",
         "pefile2==1.2.11",
@@ -206,6 +207,11 @@ do_setup(
         "unicorn==1.0.1",
         "wakeonlan==0.2.2",
         "yara-python==3.6.3",
+        "pandas==0.21.0",
+        "scikit-learn==0.19.1",
+        "matplotlib==2.1.0",
+        "numpy==1.13.3",
+        "scipy==1.0.0",
     ],
     extras_require={
         ":sys_platform == 'win32'": [
