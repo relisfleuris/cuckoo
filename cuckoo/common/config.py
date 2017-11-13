@@ -796,6 +796,12 @@ class Config(object):
             "lr":{
                 "enabled": Boolean(False),
             },
+            "nb":{
+                "enabled": Boolean(False),
+            },
+            "svm":{
+                "enabled": Boolean(False),
+            },
         },
         "routing": {
             "routing": {

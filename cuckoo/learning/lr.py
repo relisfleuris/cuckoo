@@ -1,19 +1,18 @@
-from sklearn.tree import DecisionTreeClassifier
-
+from sklearn.linear_model import LogisticRegression
 from cuckoo.common.abstracts import Learn
 
-class CART(Learn):
+class LR(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        cart = DecisionTreeClassifier()
-        cart.fit(self.X_train, self.Y_train)
+        lr = LogisticRegression()
+        lr.fit(self.X_train, self.Y_train)
         data = self.get_data(results)
-        prediction = cart.predict(data)
+        print data
+        prediction = lr.predict(data)
         if 'predictions' not in results:
             results['predictions'] = {}
         results['predictions'][self.__class__.__name__] = prediction[0]
-
     def get_data(self, results):
         #first get all apis used in this artfact (20)
         api_list = self.parameters[:20]
@@ -42,7 +41,5 @@ class CART(Learn):
         report.append(len(hosts))
         report.append(avgentropy)
         answer = [] #needs a 2D array, to predict something
-        print report
         answer.append(report)
-        print answer
         return answer
