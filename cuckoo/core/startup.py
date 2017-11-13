@@ -52,7 +52,6 @@ def check_configs():
     configs = (
         "auxiliary", "cuckoo", "memory", "processing", "reporting", "routing", "learning"
     )
-
     for filename in configs:
         if not os.path.exists(cwd("conf", "%s.conf" % filename)):
             raise CuckooStartupError(
