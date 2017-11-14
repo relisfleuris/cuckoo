@@ -4,7 +4,7 @@
 # See the file 'docs/LICENSE' for copying permission.
 
 from cuckoo import (
-    auxiliary, machinery, processing, reporting
+    auxiliary, machinery, processing, reporting, learning
 )
 
 from cuckoo.misc import version as __version__
@@ -18,5 +18,6 @@ plugins = {
     "machinery": machinery.plugins.values(),
     "processing": processing.plugins,
     "reporting": reporting.plugins,
+    "learning" : learning.plugins,
     "signatures": signatures,
 }

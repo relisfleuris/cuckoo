@@ -271,7 +271,7 @@ def tasks_view(task_id):
     if task.sample_id:
         sample = db.view_sample(task.sample_id)
         entry["sample"] = sample.to_dict()
-
+    entry["predict"] = {}
     response["task"] = entry
     return jsonify(response)
 
