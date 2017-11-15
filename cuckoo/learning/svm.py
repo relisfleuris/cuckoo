@@ -5,13 +5,13 @@ class SVM(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        svm = SVC()
-        svm.fit(self.X_train, self.Y_train)
+        svm = SVC(probability=True)
+        svm.fit(self.X, self.Y)
         data = self.get_data(results)
         prediction = svm.predict(data)
-        if 'predictions' not in results:
-            results['predictions'] = {}
-        results['predictions'][self.__class__.__name__] = prediction[0]
+        score = svm.predict_proba(data)
+        self.set_predict(results, prediction[0])
+        self.set_score(results, score[0])
     def get_data(self, results):
         #first get all apis used in this artfact (20)
         api_list = self.parameters[:20]

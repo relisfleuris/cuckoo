@@ -6,12 +6,12 @@ class KNN(Learn):
     def run(self, results):
         self.preparate_dataset()
         knn = KNeighborsClassifier()
-        knn.fit(self.X_train, self.Y_train)
+        knn.fit(self.X, self.Y)
         data = self.get_data(results)
         prediction = knn.predict(data)
-        if 'predictions' not in results:
-            results['predictions'] = {}
-        results['predictions'][self.__class__.__name__] = prediction[0]
+        score = knn.predict_proba(data)
+        self.set_predict(results,prediction[0])
+        self.set_score(results, score[0])
     def get_data(self, results):
         #first get all apis used in this artfact (20)
         api_list = self.parameters[:20]

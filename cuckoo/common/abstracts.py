@@ -1225,7 +1225,7 @@ class Learn(object):
         entropies = []
         totalsize = sum(int(section["size_of_data"], 16) for section in pe_sections)
         return sum(section["entropy"]*int(section["size_of_data"],16)/totalsize for section in pe_sections)
-        
+
     def set_options(self, options):
         self.options = Dictionary(options)
 
@@ -1233,7 +1233,18 @@ class Learn(object):
         self.parameters = parameters
     def set_dataset_path(self, dataset_name):
         self.dataset_path = os.path.join(self.learning_path, dataset_name)
-
+    def set_predict(self, results, prediction):
+        if 'learning' not in results:
+            results['learning'] = {}
+        if self.__class__.__name__ not in results['learning']:
+            results['learning'][self.__class__.__name__] = {}
+        results['learning'][self.__class__.__name__].update({'predict':prediction})
+    def set_score(self, results, score):
+        if 'learning' not in results:
+            results['learning'] = {}
+        if self.__class__.__name__ not in results['learning']:
+            results['learning'][self.__class__.__name__] = {}
+        results['learning'][self.__class__.__name__].update({'score':score.tolist()})
     def preparate_dataset(self):
         dataset = pandas.read_csv(self.dataset_path, names=self.parameters, index_col=False)
         array_values = dataset.values
@@ -1247,6 +1258,8 @@ class Learn(object):
         seed = random.randrange(0,100)
         #(X_train, X_validation, Y_train, Y_validation)
         self.X_train, self.X_validation, self.Y_train, self.Y_validation = model_selection.train_test_split(X, Y, test_size=validation_size, random_state=seed)
+        self.X = X
+        self.Y = Y
     #def generate(self, current):
     #    cart = model.fit(self.X_train, self.Y_train)
     #    dspath = os.path.join(self.learning_path, +".ml")
