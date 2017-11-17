@@ -5,7 +5,7 @@ class SVM(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        svm = SVC(probability=True)
+        svm = SVC(probability=True, class_weight='balanced')
         svm.fit(self.X, self.Y)
         data = self.get_data(results)
         prediction = svm.predict(data)

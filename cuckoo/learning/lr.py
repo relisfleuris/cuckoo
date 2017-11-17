@@ -5,7 +5,7 @@ class LR(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        lr = LogisticRegression()
+        lr = LogisticRegression(class_weight='balanced')
         lr.fit(self.X, self.Y)
         data = self.get_data(results)
         prediction = lr.predict(data)
