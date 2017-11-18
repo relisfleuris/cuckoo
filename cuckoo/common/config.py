@@ -802,6 +802,9 @@ class Config(object):
             "svm":{
                 "enabled": Boolean(False),
             },
+            "mlp":{
+                "enabled": Boolean(False),
+            },
         },
         "routing": {
             "routing": {

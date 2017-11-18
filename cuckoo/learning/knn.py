@@ -5,7 +5,7 @@ class KNN(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        knn = KNeighborsClassifier()
+        knn = KNeighborsClassifier(weights='distance')
         knn.fit(self.X, self.Y)
         data = self.get_data(results)
         prediction = knn.predict(data)
