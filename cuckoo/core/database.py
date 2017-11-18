@@ -403,7 +403,6 @@ class AlembicVersion(Base):
 
 class Database(object):
     """Analysis queue database.
-
     This class handles the creation of the database user for internal queue
     management. It also provides some functions for interacting with it.
     """
