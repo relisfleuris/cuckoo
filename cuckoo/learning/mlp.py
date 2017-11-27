@@ -8,14 +8,19 @@ class MLP(Learn):
         mlp = MLPClassifier(max_iter=200, alpha=0.001, solver='lbfgs', activation='tanh')
         mlp.fit(self.X, self.Y)
         data = self.get_data(results)
-        prediction = mlp.predict(data)
-        score = mlp.predict_proba(data)
+        if data is None:
+            return
+        prediction = cart.predict(data)
+        score = cart.predict_proba(data)
         self.set_predict(results,prediction[0])
         self.set_score(results, score[0])
     def get_data(self, results):
         #first get all apis used in this artfact (20)
         api_list = self.parameters[:20]
-        apistats = results["behavior"]["apistats"]
+        if 'behavior' in results:
+            apistats = results["behavior"]["apistats"]
+        else:
+            return None
         report = []
         count = 0
         for a in api_list:
@@ -36,9 +41,14 @@ class MLP(Learn):
             hosts = results["network"]["hosts"]
         except:
             hosts = []
-        avgentropy = round(self.entropy(results["static"]["pe_sections"]), 4)
+        try:
+            avgentropy = round(self.entropy(results["static"]["pe_sections"]), 4)
+        except:
+            avgentropy = 5 #standard avg entropy
         report.append(len(hosts))
         report.append(avgentropy)
         answer = [] #needs a 2D array, to predict something
+        print report
         answer.append(report)
+        print answer
         return answer

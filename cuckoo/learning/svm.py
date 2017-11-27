@@ -8,14 +8,19 @@ class SVM(Learn):
         svm = SVC(probability=True, class_weight='balanced')
         svm.fit(self.X, self.Y)
         data = self.get_data(results)
-        prediction = svm.predict(data)
-        score = svm.predict_proba(data)
-        self.set_predict(results, prediction[0])
+        if data is None:
+            return
+        prediction = cart.predict(data)
+        score = cart.predict_proba(data)
+        self.set_predict(results,prediction[0])
         self.set_score(results, score[0])
     def get_data(self, results):
         #first get all apis used in this artfact (20)
         api_list = self.parameters[:20]
-        apistats = results["behavior"]["apistats"]
+        if 'behavior' in results:
+            apistats = results["behavior"]["apistats"]
+        else:
+            return None
         report = []
         count = 0
         for a in api_list:
@@ -36,9 +41,14 @@ class SVM(Learn):
             hosts = results["network"]["hosts"]
         except:
             hosts = []
-        avgentropy = round(self.entropy(results["static"]["pe_sections"]), 4)
+        try:
+            avgentropy = round(self.entropy(results["static"]["pe_sections"]), 4)
+        except:
+            avgentropy = 5 #standard avg entropy
         report.append(len(hosts))
         report.append(avgentropy)
         answer = [] #needs a 2D array, to predict something
+        print report
         answer.append(report)
+        print answer
         return answer
