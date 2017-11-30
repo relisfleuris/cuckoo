@@ -10,8 +10,8 @@ class MLP(Learn):
         data = self.get_data(results)
         if data is None:
             return
-        prediction = cart.predict(data)
-        score = cart.predict_proba(data)
+        prediction = mlp.predict(data)
+        score = mlp.predict_proba(data)
         self.set_predict(results,prediction[0])
         self.set_score(results, score[0])
     def get_data(self, results):
