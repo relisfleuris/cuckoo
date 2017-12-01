@@ -7,8 +7,7 @@ class LR(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        lr = make_pipeline(StandardScaler()from sklearn.pipeline import make_pipeline
-        ,LogisticRegression(class_weight='balanced'))
+        lr = make_pipeline(StandardScaler(),LogisticRegression(class_weight='balanced'))
         lr.fit(self.X, self.Y)
         data = self.get_data(results)
         if data is None:
