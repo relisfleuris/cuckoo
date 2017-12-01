@@ -1,11 +1,12 @@
 from sklearn.neural_network import MLPClassifier
 from cuckoo.common.abstracts import Learn
+from sklearn.preprocessing import StandardScaler
 
 class MLP(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        mlp = MLPClassifier(max_iter=200, alpha=0.001, solver='lbfgs', activation='tanh')
+        mlp = make_pipeline(StandardScaler(),MLPClassifier(max_iter=200, alpha=0.001, solver='lbfgs', activation='tanh'))
         mlp.fit(self.X, self.Y)
         data = self.get_data(results)
         if data is None:

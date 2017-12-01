@@ -1,6 +1,7 @@
 from sklearn.svm import SVC
 from cuckoo.common.abstracts import Learn
 
+
 class SVM(Learn):
 
     def run(self, results):

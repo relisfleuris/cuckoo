@@ -1,11 +1,12 @@
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from cuckoo.common.abstracts import Learn
+from sklearn.preprocessing import StandardScaler
 
 class LDA(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        lda = LinearDiscriminantAnalysis()
+        lda = make_pipeline(StandardScaler(), LinearDiscriminantAnalysis())
         lda.fit(self.X, self.Y)
         data = self.get_data(results)
         if data is None:

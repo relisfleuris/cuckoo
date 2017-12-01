@@ -1,11 +1,12 @@
 from sklearn.naive_bayes import GaussianNB
 from cuckoo.common.abstracts import Learn
+from sklearn.preprocessing import StandardScaler
 
 class NB(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        nb = GaussianNB()
+        nb = make_pipeline(StandardScaler(),GaussianNB())
         nb.fit(self.X, self.Y)
         data = self.get_data(results)
         if data is None:

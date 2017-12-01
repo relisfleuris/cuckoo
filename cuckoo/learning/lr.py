@@ -1,11 +1,12 @@
 from sklearn.linear_model import LogisticRegression
 from cuckoo.common.abstracts import Learn
+from sklearn.preprocessing import StandardScaler
 
 class LR(Learn):
 
     def run(self, results):
         self.preparate_dataset()
-        lr = LogisticRegression(class_weight='balanced')
+        lr = make_pipeline(StandardScaler(),LogisticRegression(class_weight='balanced'))
         lr.fit(self.X, self.Y)
         data = self.get_data(results)
         if data is None:
