@@ -1,6 +1,7 @@
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from cuckoo.common.abstracts import Learn
 from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
 
 class LDA(Learn):
 

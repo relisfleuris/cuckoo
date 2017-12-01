@@ -1,6 +1,7 @@
 from sklearn.naive_bayes import GaussianNB
 from cuckoo.common.abstracts import Learn
 from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import make_pipeline
 
 class NB(Learn):
 
